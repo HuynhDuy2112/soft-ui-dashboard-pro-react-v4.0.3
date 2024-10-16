@@ -45,7 +45,7 @@ function ReportsDoughnutChart({ title, count, chart, tooltip = '', isTitle }) {
     chart.labels && chart.datasets
       ? chart.labels.map((label, key) => (
           <ReportsDoughnutChartItem
-            color={[...chart?.datasets?.backgroundColors]}
+            color={chart.datasets.backgroundColors[key]}
             title={label}
             key={label}
             percentage={`${chart.datasets.data ? chart.datasets.data[key] : 0}`}
@@ -55,9 +55,9 @@ function ReportsDoughnutChart({ title, count, chart, tooltip = '', isTitle }) {
       : null
 
   return (
-    <Card>
+    <Card sx={{ boxShadow: 'none' }}>
       {isTitle ? (
-        <SoftBox display="flex" justifyContent="space-between" alignItems="center" pt={2} px={2}>
+        <SoftBox display="flex" justifyContent="space-between" alignItems="center" pt={2} px={1}>
           <SoftTypography variant="h6">{title}</SoftTypography>
           <Tooltip title={tooltip} placement="bottom" arrow>
             <SoftButton variant="outlined" color="secondary" size="small" circular iconOnly>
@@ -71,25 +71,31 @@ function ReportsDoughnutChart({ title, count, chart, tooltip = '', isTitle }) {
         {useMemo(
           () => (
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={5}>
+              <Grid padding="10px" height="250px" item xs={12} sm={5}>
                 <SoftBox height="100%" textAlign="center" position="relative">
-                  <SoftBox height={{ xs: '65%', sm: '100%' }} mt={{ xs: 6, sm: 0 }}>
+                  <SoftBox height={{ xs: '65%', sm: '108%' }} mt={{ xs: 6, sm: 0 }}>
                     <Doughnut data={data} options={options} />
                   </SoftBox>
                   <SoftBox
                     mt={{ xs: 0, sm: -15.25 }}
                     position="relative"
-                    top={{ xs: '-8.25rem', sm: 0 }}
+                    top={{ xs: '-8.25rem', sm: '-44px' }}
                   >
                     <SoftTypography
-                      variant="button"
-                      color="text"
+                      fontSize="0.7rem"
+                      sx={{ color: '#A0AEC0' }}
                       textTransform="uppercase"
                       fontWeight="medium"
+                      display="block"
                     >
                       {count.text}
                     </SoftTypography>
-                    <SoftTypography variant="h4" fontWeight="medium">
+                    <SoftTypography
+                      color="info"
+                      fontSize="3.5rem"
+                      fontWeight="bold"
+                      textGradient="true"
+                    >
                       {count.number}
                     </SoftTypography>
                   </SoftBox>

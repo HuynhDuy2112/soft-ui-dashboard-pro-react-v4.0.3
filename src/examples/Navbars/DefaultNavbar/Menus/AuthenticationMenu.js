@@ -14,49 +14,50 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useState } from 'react'
 
 // prop-types is a library for typechecking of props.
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types'
 
 // react-router components
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
 
 // @mui material components
-import MenuItem from "@mui/material/MenuItem";
-import Icon from "@mui/material/Icon";
+import MenuItem from '@mui/material/MenuItem'
+import Icon from '@mui/material/Icon'
 
 // Soft UI Dashboard PRO React components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
+import SoftBox from 'components/SoftBox'
+import SoftTypography from 'components/SoftTypography'
 
 // Soft UI Dashboard PRO React example components
-import DefaultNavbarMenu from "examples/Navbars/DefaultNavbar/DefaultNavbarMenu";
+import DefaultNavbarMenu from 'examples/Navbars/DefaultNavbar/DefaultNavbarMenu'
 
 // Images
-import curved8 from "assets/images/curved-images/curved8.jpg";
+import curved8 from 'assets/images/curved-images/curved8.jpg'
 
 function Menu({ collapse, name, mobileMenu }) {
-  const [menu, setMenu] = useState(false);
+  const [menu, setMenu] = useState(false)
 
-  const openMenu = ({ currentTarget }) => setMenu(currentTarget);
-  const closeMenu = () => setMenu(false);
+  const openMenu = ({ currentTarget }) => setMenu(currentTarget)
+  const closeMenu = () => setMenu(false)
 
   return (
     <MenuItem onMouseEnter={openMenu} onMouseLeave={closeMenu}>
       {name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <Icon sx={{ fontWeight: "bold", ml: "auto" }}>chevron_right</Icon>
+      <Icon sx={{ fontWeight: 'bold', ml: 'auto' }}>chevron_right</Icon>
       <DefaultNavbarMenu
         placement="right-start"
         open={menu}
         close={closeMenu}
-        style={{ paddingLeft: "1.25rem" }}
+        style={{ paddingLeft: '1.25rem' }}
       >
         {collapse.map(({ key: collapseKey, name: collapseName, route }) => (
           <MenuItem
             component={Link}
             to={route}
             key={collapseKey}
+            // eslint-disable-next-line no-restricted-globals
             onClick={mobileMenu ? undefined : close}
           >
             {collapseName}
@@ -64,16 +65,16 @@ function Menu({ collapse, name, mobileMenu }) {
         ))}
       </DefaultNavbarMenu>
     </MenuItem>
-  );
+  )
 }
 
 function AuthenticationMenu({ routes, open = false, close = false, mobileMenu = false }) {
   const renderAuthenticationMenuRoute = (routeName) =>
     routes.map(({ key, name, collapse }) => {
-      let template;
+      let template
 
       if (key === routeName && !mobileMenu) {
-        template = <Menu collapse={collapse} mobileMenu={mobileMenu} name={name} />;
+        template = <Menu collapse={collapse} mobileMenu={mobileMenu} name={name} />
       } else if (key === routeName && mobileMenu) {
         template = (
           <SoftBox key={key} pr={2} mt={0} mb={2}>
@@ -91,14 +92,14 @@ function AuthenticationMenu({ routes, open = false, close = false, mobileMenu = 
               </MenuItem>
             ))}
           </SoftBox>
-        );
+        )
       }
 
-      return template;
-    });
+      return template
+    })
 
   const renderMenuContent = (
-    <SoftBox display={mobileMenu ? "block" : "flex"}>
+    <SoftBox display={mobileMenu ? 'block' : 'flex'}>
       {!mobileMenu && (
         <SoftBox
           width="10rem"
@@ -148,7 +149,7 @@ function AuthenticationMenu({ routes, open = false, close = false, mobileMenu = 
                     gradients.info.main,
                     gradients.info.state
                   )} !important`,
-                  WebkitBackgroundClip: "text !important",
+                  WebkitBackgroundClip: 'text !important',
                   WebkitTextFillColor: `${transparent.main} !important`,
                 })}
               >
@@ -162,15 +163,15 @@ function AuthenticationMenu({ routes, open = false, close = false, mobileMenu = 
         </SoftBox>
       )}
       <SoftBox py={1} pl={2}>
-        {renderAuthenticationMenuRoute("sign-in")}
-        {renderAuthenticationMenuRoute("sign-up")}
-        {renderAuthenticationMenuRoute("reset-password")}
-        {renderAuthenticationMenuRoute("lock")}
-        {renderAuthenticationMenuRoute("2-step-verification")}
-        {renderAuthenticationMenuRoute("error")}
+        {renderAuthenticationMenuRoute('sign-in')}
+        {renderAuthenticationMenuRoute('sign-up')}
+        {renderAuthenticationMenuRoute('reset-password')}
+        {renderAuthenticationMenuRoute('lock')}
+        {renderAuthenticationMenuRoute('2-step-verification')}
+        {renderAuthenticationMenuRoute('error')}
       </SoftBox>
     </SoftBox>
-  );
+  )
 
   return mobileMenu ? (
     renderMenuContent
@@ -178,9 +179,8 @@ function AuthenticationMenu({ routes, open = false, close = false, mobileMenu = 
     <DefaultNavbarMenu open={open} close={close}>
       {renderMenuContent}
     </DefaultNavbarMenu>
-  );
+  )
 }
-
 
 // Typechecking props for the AuthenticationMenu
 AuthenticationMenu.propTypes = {
@@ -188,6 +188,6 @@ AuthenticationMenu.propTypes = {
   open: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   close: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
   mobileMenu: PropTypes.bool,
-};
+}
 
-export default AuthenticationMenu;
+export default AuthenticationMenu

@@ -31,9 +31,6 @@ function ReportsDoughnutChartItem({ color, title, percentage, hasBorder = false 
   const { borderWidth } = borders
   const { light } = colors
 
-  console.log(`color: ${color}`)
-  console.log(typeof color)
-
   return (
     <Grid
       container
@@ -41,19 +38,20 @@ function ReportsDoughnutChartItem({ color, title, percentage, hasBorder = false 
       alignItems="center"
       sx={{
         borderBottom: hasBorder ? `${borderWidth[1]} solid ${light.main}` : 'none',
-        lineHeight: 1.25,
+        lineHeight: 2,
       }}
     >
       <Grid item xs={10}>
         <SoftBox display="flex" py={0.8} px={2}>
           <SoftBox
             bgColor={color}
-            width="1.35rem"
-            height="1.35rem"
+            width="1rem"
+            height="1rem"
             borderRadius="50%"
+            sx={{ marginTop: '2.5px' }}
             mr={2}
             lineHeight={0}
-            variant="gradient"
+            // variant="gradient"
           />
           <SoftBox display="flex" flexDirection="column" justifyContent="center">
             <SoftTypography

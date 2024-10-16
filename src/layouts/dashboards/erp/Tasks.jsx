@@ -6,7 +6,7 @@ import { useState } from 'react'
 import Grid from '@mui/material/Grid'
 
 //Antd
-import { Button, Dropdown } from 'antd'
+import { Button, Dropdown, Badge /* Calendar */ } from 'antd'
 
 //Soft UI
 import SoftBox from 'components/SoftBox'
@@ -139,7 +139,7 @@ function Tasks() {
                 </SoftBox>
               </Grid>
               <Grid item xs={12}>
-                <SoftBox className="layout">
+                <SoftBox sx={{ padding: '20px 20px 0 20px' }} className="layout">
                   <SoftBox className="layout_title">
                     <SoftTypography variant="h5">Báo cáo công việc</SoftTypography>
                     <SoftBox
@@ -169,32 +169,34 @@ function Tasks() {
                   <SoftBox pt={2}>
                     <Grid container spacing={2}>
                       <Grid item xs={12}>
-                        <ReportsDoughnutChart
-                          isTitle={false}
-                          count={{ number: sumDataChart, text: 'Tổng' }}
-                          chart={{
-                            labels: [
-                              'Hoàn thành trước hạn',
-                              'Hoàn thành đúng hạn',
-                              'Hoàn thành trễ hạn',
-                              'Chờ duyệt',
-                              'Chưa hoàn thành',
-                              'Quá hạn',
-                            ],
-                            datasets: {
-                              label: 'Consumption',
-                              backgroundColors: [
-                                '#04B9A7',
-                                '#2275FF',
-                                '#F9757E',
-                                '#C327E2',
-                                '#A0AEC0',
-                                '#F1252B',
+                        <div className="test">
+                          <ReportsDoughnutChart
+                            isTitle={false}
+                            count={{ number: sumDataChart, text: 'Tổng' }}
+                            chart={{
+                              labels: [
+                                'Hoàn thành trước hạn',
+                                'Hoàn thành đúng hạn',
+                                'Hoàn thành trễ hạn',
+                                'Chờ duyệt',
+                                'Chưa hoàn thành',
+                                'Quá hạn',
                               ],
-                              data: dataChart,
-                            },
-                          }}
-                        />
+                              datasets: {
+                                label: 'Consumption',
+                                backgroundColors: [
+                                  '#04B9A7',
+                                  '#2275FF',
+                                  '#F9757E',
+                                  '#C327E2',
+                                  '#A0AEC0',
+                                  '#F1252B',
+                                ],
+                                data: dataChart,
+                              },
+                            }}
+                          />
+                        </div>
                       </Grid>
                     </Grid>
                   </SoftBox>
@@ -214,7 +216,7 @@ function Tasks() {
                       </SoftTypography>
                     </SoftBox>
                     <SoftBox>
-                      <SoftTypography color="info" variant="h6">
+                      <SoftTypography sx={{ color: '#2275FF' }} variant="h6">
                         Tất cả
                       </SoftTypography>
                     </SoftBox>

@@ -33,10 +33,6 @@ function ERP() {
   const [controller, dispatch] = useSoftUIController()
   const { miniSidenav, fixedNavbar } = controller
 
-  const onChange = (key) => {
-    console.log(key)
-  }
-
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {
@@ -95,7 +91,7 @@ function ERP() {
           <Grid container spacing={2} mt={1}>
             <Grid item xs={12}>
               <SoftBox className="custom-tabs-layout">
-                <Tabs defaultActiveKey="1" items={itemTabs} onChange={onChange} />
+                <Tabs defaultActiveKey="1" items={itemTabs} />
               </SoftBox>
             </Grid>
           </Grid>
