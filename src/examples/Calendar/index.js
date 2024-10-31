@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import PropTypes from 'prop-types'
 
-import { Form, Modal, Button } from 'antd'
+import { Form, Modal } from 'antd'
+
 import dayjs from 'dayjs'
 
 import FullCalendar from '@fullcalendar/react'
@@ -9,34 +9,71 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 
-import Card from '@mui/material/Card'
-
-import SoftBox from 'components/SoftBox'
-import SoftTypography from 'components/SoftTypography'
-
 import CalendarRoot from 'examples/Calendar/CalendarRoot'
 import RenderForm from 'examples/Calendar/RenderForm'
 import ConfirmDelete from 'examples/Calendar/ConfirmDelete'
+import IconDelete from '../../assets/images/erp/delete-icon.svg'
 import './styles.scss'
+import { API_BASE_URL } from 'config.jsx'
 
-function Calendar({ header = { title: '', date: '' }, ...rest }) {
+function Calendar({ data }) {
   const [form] = Form.useForm()
   const [open, setOpen] = useState(false)
   const [events, setEvents] = useState([])
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [currentEvent, setCurrentEvent] = useState(null)
   const [isEdited, setIsEdited] = useState(false)
+  const [validClassNames, setValidClassNames] = useState([])
   const dateClick = useRef(null)
   const eventClick = useRef(null)
   const checkEdit = useRef(null)
+  const calendarRef = useRef(null)
 
-  const validClassNames = [
-    { status: 'Đang đợi xử lí', name: 'Secondary', class: 'event-secondary' },
-    { status: 'Đang thực hiện', name: 'Info', class: 'event-info' },
-    { status: 'Hoàn thành đúng hạn', name: 'Success', class: 'event-success' },
-    { status: 'Trễ hạn', name: 'Warning', class: 'event-warning' },
-    { status: 'Thất bại', name: 'Error', class: 'event-error' },
-  ]
+  data.current = events
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/validClassNames`)
+      .then((response) => response.json())
+      .then((data) => setValidClassNames(data))
+      .catch((error) => console.error(error))
+
+    fetch(`${API_BASE_URL}/events`)
+      .then((response) => response.json())
+      .then((data) => setEvents(data))
+      .catch((error) => console.error(error))
+  }, [])
+
+  console.log(events)
+
+  //post events to api
+  useEffect(() => {
+    /* fetch(`${API_BASE_URL}/events`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(events),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Data uploaded successfully:', data)
+      })
+      .catch((error) => {
+        console.error('Error uploading data:', error)
+      }) */
+    /* fetch(`${API_BASE_URL}/events`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(events),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Data uploaded successfully:', data)
+      })
+      .catch((error) => console.error('Error:', error)) */
+  }, [events])
 
   useEffect(() => {
     if (dateClick.current != null) {
@@ -64,8 +101,6 @@ function Calendar({ header = { title: '', date: '' }, ...rest }) {
     } else {
       setCurrentEvent(null)
     }
-
-    setIsEdited(false)
   }, [open])
 
   const handleCheckEdit = () => {
@@ -91,6 +126,7 @@ function Calendar({ header = { title: '', date: '' }, ...rest }) {
   }
 
   const handleCancel = () => {
+    form.resetFields()
     setOpen(false)
   }
 
@@ -112,65 +148,68 @@ function Calendar({ header = { title: '', date: '' }, ...rest }) {
         }
       })
       setOpen(false)
-    } /* if (isEdited)  */ else {
-      const updatedEvents = events.filter((event) => event.id != currentEvent.id)
-      setEvents(updatedEvents)
-      validClassNames.map((type) => {
-        if (type.status === values.typeEvent) {
-          setEvents((props) => [
-            ...props,
-            {
-              id: Date.now(),
+    } else {
+      setEvents(
+        events.map((event) => {
+          if (event.id === +currentEvent.id) {
+            const foundClassName = validClassNames.find((type) => type.status === values.typeEvent)
+            return {
+              ...event,
               title: values.content,
               start: values.startDate.format('YYYY-MM-DD'),
               end: values.endDate.add(1, 'day').format('YYYY-MM-DD'),
               status: values.typeEvent,
-              className: type.class,
-            },
-          ])
-        }
-      })
-      /* events.map((event) => {
-        if (event.id === currentEvent.id) {
-          return {
-            ...event,
-            title: values.content,
-            start: values.startDate.format('YYYY-MM-DD'),
-            end: values.endDate.add(1, 'day').format('YYYY-MM-DD'),
-            status: values.typeEvent,
+              className: foundClassName ? foundClassName.class : event.className,
+            }
           }
-        }
-        return event
-      }) */
+          return event
+        })
+      )
       setOpen(false)
       setIsEdited(false)
     }
   }
 
-  return (
-    <Card sx={{ height: '100%', boxShadow: 'none' }}>
-      <SoftBox pt={2} px={2} lineHeight={1}>
-        {header.title ? (
-          <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-            {header.title}
-          </SoftTypography>
-        ) : null}
-        {header.date ? (
-          <SoftTypography component="p" variant="button" color="text" fontWeight="medium">
-            {header.date}
-          </SoftTypography>
-        ) : null}
-      </SoftBox>
+  const customButtons = {
+    myPrev: {
+      text: '<',
+      className: 'btn-prev-next',
+      click: function () {
+        calendarRef.current.getApi().prev()
+      },
+    },
+    myNext: {
+      text: '>',
+      className: 'btn-prev-next',
+      click: function () {
+        calendarRef.current.getApi().next()
+      },
+    },
+  }
 
+  return (
+    <div>
       <CalendarRoot p={2}>
         <FullCalendar
-          {...rest}
+          ref={calendarRef}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          initialView="dayGridMonth"
           events={events}
           eventClick={handleEventClick}
           dateClick={handleDateClick}
           height="100%"
-          headerToolbar={{ right: 'dayGridMonth,timeGridWeek,timeGridDay' }}
+          headerToolbar={{
+            left: 'myPrev title myNext today',
+            right: 'timeGridDay timeGridWeek dayGridMonth',
+          }}
+          customButtons={customButtons}
+          titleFormat={{ year: 'numeric', month: '2-digit' }}
+          buttonText={{
+            today: 'Hôm nay',
+            month: 'Tháng',
+            week: 'Tuần',
+            day: 'Ngày',
+          }}
           editable={true}
           locale="vi"
         />
@@ -180,24 +219,13 @@ function Calendar({ header = { title: '', date: '' }, ...rest }) {
           open={open}
           footer={null}
           onCancel={handleCancel}
-          closable
+          closable={currentEvent != null ? false : true}
           className="modal-form-add-event-calendar"
         >
           {currentEvent != null ? (
-            <Button
-              type="default"
-              variant="filled"
-              onClick={() => setConfirmDelete(true)}
-              style={{
-                position: 'absolute',
-                right: '47px',
-                top: '20px',
-                height: '36px',
-                fontSize: '16px',
-              }}
-            >
-              Xóa
-            </Button>
+            <div onClick={() => setConfirmDelete(true)} className="btn-delete">
+              <img src={IconDelete} alt="Delete" />
+            </div>
           ) : null}
 
           <RenderForm
@@ -216,15 +244,8 @@ function Calendar({ header = { title: '', date: '' }, ...rest }) {
           handleDeleteEvent={handleDeleteEvent}
         />
       </CalendarRoot>
-    </Card>
+    </div>
   )
-}
-
-Calendar.propTypes = {
-  header: PropTypes.shape({
-    title: PropTypes.string,
-    date: PropTypes.string,
-  }),
 }
 
 export default Calendar

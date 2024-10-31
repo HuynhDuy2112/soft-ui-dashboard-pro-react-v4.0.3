@@ -27,6 +27,7 @@ export default styled(Box)(({ theme }) => {
 
   return {
     height: '100%',
+    width: '100%',
 
     '& .fc-media-screen': {
       height: '100%',
@@ -64,6 +65,10 @@ export default styled(Box)(({ theme }) => {
       textAlign: 'center',
     },
 
+    '& .fc .fc-col-header': {
+      width: '100% !important',
+    },
+
     '& .fc-scrollgrid-section.fc-scrollgrid-section-header > td': {
       border: 'none',
     },
@@ -73,6 +78,7 @@ export default styled(Box)(({ theme }) => {
     },
 
     '& .fc-scrollgrid-sync-table': {
+      width: '100% !important',
       height: 'auto !important',
     },
 
@@ -91,6 +97,10 @@ export default styled(Box)(({ theme }) => {
       borderRadius: pxToRem(5.6),
       fontSize: size.sm,
       fontWeight: fontWeightMedium,
+    },
+
+    '& .fc .fc-daygrid-body': {
+      width: '100%!important',
     },
 
     '& .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events': {

@@ -21,6 +21,7 @@ function ConfirmDelete({ confirmDelete, setConfirmDelete, handleDeleteEvent }) {
         <Button
           key="confirm"
           type="primary"
+          className="btn-submit"
           onClick={() => {
             handleDeleteEvent()
           }}
