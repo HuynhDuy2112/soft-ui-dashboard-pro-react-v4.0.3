@@ -25,47 +25,5 @@
       "class": "event-secondary",
       "id": "1355"
     }
-  ],
-  "events": [
-    {
-      "id": 1730339084456,
-      "title": "Công việc đúng hạn",
-      "start": "2024-10-14",
-      "end": "2024-10-16",
-      "status": "Hoàn thành đúng hạn",
-      "className": "event-success"
-    },
-    {
-      "id": 1730339088997,
-      "title": "Công việc trễ hạn",
-      "start": "2024-10-23",
-      "end": "2024-10-25",
-      "status": "Trễ hạn",
-      "className": "event-error"
-    },
-    {
-      "id": 1730339098144,
-      "title": "Công việc đang được thực hiện",
-      "start": "2024-10-17",
-      "end": "2024-10-20",
-      "status": "Đang thực hiện",
-      "className": "event-warning"
-    },
-    {
-      "id": 1730343726894,
-      "title": "Công việc đang đợi được duyệt",
-      "start": "2024-10-07",
-      "end": "2024-10-12",
-      "status": "Đang đợi xử lí",
-      "className": "event-info"
-    },
-    {
-      "id": 1730343750110,
-      "title": "Công việc thất bại",
-      "start": "2024-10-27",
-      "end": "2024-10-31",
-      "status": "Thất bại",
-      "className": "event-secondary"
-    }
   ]
 }

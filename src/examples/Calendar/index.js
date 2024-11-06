@@ -37,42 +37,14 @@ function Calendar({ data }) {
       .then((data) => setValidClassNames(data))
       .catch((error) => console.error(error))
 
-    fetch(`${API_BASE_URL}/events`)
-      .then((response) => response.json())
-      .then((data) => setEvents(data))
-      .catch((error) => console.error(error))
+    const storedEvents = JSON.parse(localStorage.getItem('events'))
+    if (storedEvents) {
+      setEvents(storedEvents)
+    }
   }, [])
 
-  console.log(events)
-
-  //post events to api
   useEffect(() => {
-    /* fetch(`${API_BASE_URL}/events`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(events),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Data uploaded successfully:', data)
-      })
-      .catch((error) => {
-        console.error('Error uploading data:', error)
-      }) */
-    /* fetch(`${API_BASE_URL}/events`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(events),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Data uploaded successfully:', data)
-      })
-      .catch((error) => console.error('Error:', error)) */
+    localStorage.setItem('events', JSON.stringify(events))
   }, [events])
 
   useEffect(() => {
